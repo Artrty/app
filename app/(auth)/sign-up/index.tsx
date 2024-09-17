@@ -1,19 +1,12 @@
-import {
-  View,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-} from 'react-native';
-import { useEffect, useCallback, useRef, useState, useMemo } from 'react';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { View, StyleSheet } from 'react-native';
+import { useState } from 'react';
 import TitledTextInput from '@/components/auth/TitledTextInput';
 import { Button } from '@/components/common/Button';
-import { HeaderLeadingPage } from '@/components/auth/templete/HeaderLeadingPage';
+import { HeaderLeadingPage } from '@/components/template/HeaderLeadingPage';
 import { router } from 'expo-router';
-import { KeyBoardDismissWrapper } from '@/components/common/KeyboardDismissWrapper';
+import { KeyBoardDismissWrapper } from '@/components/template/KeyboardDismissWrapper';
+import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
 export default function SignUpScreen() {
-  const offset = useHeaderHeight() + StatusBar.currentHeight! - 34;
   const [stage, setStage] = useState(0);
   const [currentTitle, setCurrentTitle] = useState(0);
   const titles = [
@@ -30,11 +23,7 @@ export default function SignUpScreen() {
   ];
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.avoidingView}
-      keyboardVerticalOffset={offset}
-    >
+    <KeyboardAvoidingWithHeader>
       <KeyBoardDismissWrapper>
         <View style={styles.container}>
           <HeaderLeadingPage title={titles[stage]} subTitle={subTitles[stage]}>
@@ -99,7 +88,7 @@ export default function SignUpScreen() {
           />
         </View>
       </KeyBoardDismissWrapper>
-    </KeyboardAvoidingView>
+    </KeyboardAvoidingWithHeader>
   );
 }
 
