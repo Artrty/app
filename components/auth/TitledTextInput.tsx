@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
-interface Props {
+
+export interface IProps extends TextInputProps {
   title: string;
   sideButtonProps?: {
     title: string;
@@ -23,7 +24,7 @@ export default function TitledTextInput({
   filterRule,
   readOnly,
   ...props
-}: Props & TextInputProps) {
+}: IProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [text, setText] = useState('');
   return (
