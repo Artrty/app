@@ -11,11 +11,24 @@ interface Props {
   title: string;
   style?: object;
 }
-export function Button({ title, style, onPress }: Props & ButtonProps) {
+export function Button({
+  title,
+  style,
+  onPress,
+  disabled,
+}: Props & ButtonProps) {
   return (
     <TouchableOpacity
-      style={{ ...styles.container, ...style }}
-      onPress={onPress}
+      style={{
+        ...styles.container,
+        ...style,
+        backgroundColor: disabled ? 'lightgrey' : '#007AFF',
+      }}
+      onPress={(e) => {
+        if (!disabled) {
+          onPress && onPress(e);
+        }
+      }}
     >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>

@@ -1,23 +1,34 @@
-import { IProps } from '@/components/auth/TitledTextInput';
+import { TInputProps } from '@/components/auth/TitledTextInput';
+import { RegisterOptions } from 'react-hook-form';
 
-export interface IStageInfoType {
-  id: string;
+export type IStageInfoType = {
+  id: 'username' | 'phonenumber' | 'code' | 'password' | 'passwordRepeat';
   title: string;
   subTitle: string;
-  inputProps: IProps;
-}
+  inputProps: TInputProps;
+  rules: RegisterOptions;
+};
 
-export const StageInfo = [
+export const StageInfo: IStageInfoType[] = [
   {
     id: 'username',
     title: '이름을 알려주세요',
-    subTitle: '공연 예약에 필요해요',
+    subTitle: '공연 예약 및 현장 입장 확인에 필요해요',
     inputProps: {
       title: '이름',
       placeholder: '이름',
       inputMode: 'text',
       autoFocus: true,
-      maxLength: 6,
+      maxLength: 5,
+    },
+    rules: {
+      required: '필수 입력 항목입니다',
+      minLength: 2,
+      maxLength: 5,
+      pattern: {
+        value: /^[가-힣]{2,4}$/,
+        message: '올바른 형식으로 입력해주세요',
+      },
     },
   },
   {
@@ -31,6 +42,11 @@ export const StageInfo = [
       autoFocus: true,
       maxLength: 11,
     },
+    rules: {
+      required: '필수 입력 항목입니다.',
+      minLength: 11,
+      maxLength: 11,
+    },
   },
   {
     id: 'code',
@@ -41,6 +57,10 @@ export const StageInfo = [
       placeholder: '인증번호',
       inputMode: 'tel',
       autoFocus: true,
+      maxLength: 4,
+    },
+    rules: {
+      minLength: 4,
       maxLength: 4,
     },
   },
@@ -57,6 +77,13 @@ export const StageInfo = [
       filterRule: /\s/g,
       secureTextEntry: true,
     },
+    rules: {
+      required: '필수 입력 항목입니다',
+      minLength: {
+        value: 8,
+        message: '8자리 이상 입력해주세요',
+      },
+    },
   },
   {
     id: 'passwordRepeat',
@@ -71,7 +98,9 @@ export const StageInfo = [
       filterRule: /\s/g,
       secureTextEntry: true,
     },
+    rules: {
+      required: '필수 입력 항목입니다',
+      maxLength: 20,
+    },
   },
 ] as const;
-
-export const FormId = StageInfo.map((val) => val.id);

@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
 
 interface Props {
   title: string;
   subTitle: string;
-  children: JSX.Element;
+  children: React.ReactNode | React.ReactNode[];
 }
 export function HeaderLeadingPage({ title, subTitle, children }: Props) {
   return (

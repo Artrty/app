@@ -39,8 +39,6 @@ export default function LoginScreen() {
           <View style={styles.form}>
             <Text>Artrty</Text>
             <View style={styles.inputs}>
-              <TitledTextInput title='아이디' />
-              <TitledTextInput title='비밀번호' secureTextEntry />
               <Link href='/sign-up'>{'회원가입'}</Link>
             </View>
             <Button
