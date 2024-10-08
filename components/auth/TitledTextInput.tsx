@@ -50,21 +50,23 @@ export default function TitledTextInput<
           borderBottomColor: isFocused ? '#007AFF' : 'lightgrey',
         }}
       >
-        {text.length > 0 && (
-          <Animated.Text
-            entering={FadeIn}
-            style={{
-              ...styles.title,
-              color: isFocused
-                ? '#007AFF'
-                : textInputProps.readOnly
-                  ? 'lightgrey'
-                  : 'grey',
-            }}
-          >
-            {textInputProps.title}
-          </Animated.Text>
-        )}
+        <>
+          {text.length > 0 && (
+            <Animated.Text
+              entering={FadeIn}
+              style={{
+                ...styles.title,
+                color: isFocused
+                  ? '#007AFF'
+                  : textInputProps.readOnly
+                    ? 'lightgrey'
+                    : 'grey',
+              }}
+            >
+              {textInputProps.title}
+            </Animated.Text>
+          )}
+        </>
         <View style={styles.rowContainer}>
           <TextInput
             id={field.name}
@@ -100,11 +102,13 @@ export default function TitledTextInput<
           )}
         </View>
       </Animated.View>
-      {error?.message && error?.message !== '' && (
-        <Animated.Text layout={LinearTransition} style={styles.errorMessage}>
-          {error.message}
-        </Animated.Text>
-      )}
+      <>
+        {error?.message && error?.message !== '' && (
+          <Animated.Text layout={LinearTransition} style={styles.errorMessage}>
+            {error.message}
+          </Animated.Text>
+        )}
+      </>
     </Animated.View>
   );
 }

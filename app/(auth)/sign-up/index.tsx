@@ -2,16 +2,17 @@ import { View, StyleSheet } from 'react-native';
 import { useCallback, useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import axios from '@/lib/axios';
 
 import TitledTextInput from '@/components/auth/TitledTextInput';
 import { Button } from '@/components/common/Button';
 import { HeaderLeadingPage } from '@/components/template/HeaderLeadingPage';
 import { KeyBoardDismissWrapper } from '@/components/template/KeyboardDismissWrapper';
 import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
-import { StageInfo } from './StageInfo';
+import { SignInStageInfo, SignUpStageInfo } from './StageInfo';
 
 type FormData = {
-  [key in (typeof StageInfo)[number]['id']]: string;
+  [key in (typeof SignUpStageInfo)[number]['id']]: string;
 };
 
 export default function SignUpScreen() {
@@ -19,8 +20,8 @@ export default function SignUpScreen() {
     control,
     handleSubmit,
     getFieldState,
+    getValues,
     formState: { errors },
-    trigger,
   } = useForm<FormData>({
     mode: 'onChange',
     defaultValues: {
@@ -33,9 +34,47 @@ export default function SignUpScreen() {
   });
   const [stage, setStage] = useState(0);
   const [currentTitle, setCurrentTitle] = useState(0);
+  const [isSignUpMode, setIsSignUpMode] = useState(true);
+  const [stageInfo, setStageInfo] = useState(SignUpStageInfo);
 
-  const onSubmitSuccess: SubmitHandler<FormData> = useCallback((data) => {
+  useEffect(() => {
+    setStageInfo(isSignUpMode ? SignUpStageInfo : SignInStageInfo);
+  }, [isSignUpMode]);
+
+  const changeForm = useCallback(async () => {
+    if (stageInfo[stage].id === 'phonenumber') {
+      const res = await axios.get(`/user/${getValues().phonenumber}/valid`);
+      console.log('status', res);
+      if (res.data.data === true) {
+        // user is a member
+        setIsSignUpMode(false);
+      } else {
+        // user is not a member
+        setIsSignUpMode(true);
+        // send verification code
+        const res = await axios.get(
+          `/auth/${getValues().phonenumber}/send-sms`
+        );
+        console.log(res.data);
+      }
+    } else if (stageInfo[stage].id === 'code') {
+      const res = await axios.post(`/auth/verify-sms`, {
+        phoneNumber: getValues().phonenumber,
+        userVerifiedNumber: getValues().code,
+      });
+      console.log(res.data);
+    }
+    setStage((prev) => prev + 1);
+  }, [getValues, stage, stageInfo]);
+
+  const onSubmitSuccess: SubmitHandler<FormData> = useCallback(async (data) => {
     console.log('data', data);
+    const res = await axios.post('/auth/signup', {
+      userName: data.username,
+      phoneNumber: data.phonenumber,
+      password: data.password,
+    });
+    console.log(res);
     router.replace('/sign-up/complete');
   }, []);
 
@@ -44,135 +83,145 @@ export default function SignUpScreen() {
   }, []);
 
   const renderUsernameInput = useCallback(
-    (data: typeof StageInfo, stage: number, currentTitle: number) => {
-      const index = 0;
+    (data: typeof stageInfo, stage: number, currentTitle: number) => {
+      const index = 2;
       const info = data[index];
       return (
-        stage > index - 1 && (
-          <TitledTextInput
-            key={info.id}
-            name={info.id}
-            control={control}
-            rules={info.rules}
-            textInputProps={{
-              readOnly: stage !== index && currentTitle !== index,
-              onFocus: () => setCurrentTitle(index),
+        <>
+          {stage > index - 1 && (
+            <TitledTextInput
+              key={info.id}
+              name={info.id}
+              control={control}
+              rules={info.rules}
+              textInputProps={{
+                readOnly: stage !== index && currentTitle !== index,
+                onFocus: () => setCurrentTitle(index),
 
-              ...info.inputProps,
-            }}
-          />
-        )
+                ...info.inputProps,
+              }}
+            />
+          )}
+        </>
       );
     },
     [control]
   );
 
   const renderPhonenumberInput = useCallback(
-    (data: typeof StageInfo, stage: number, currentTitle: number) => {
-      const index = 1;
+    (data: typeof stageInfo, stage: number, currentTitle: number) => {
+      const index = 0;
       const info = data[index];
       return (
-        stage > index - 1 && (
-          <TitledTextInput
-            key={info.id}
-            name={info.id}
-            control={control}
-            rules={info.rules}
-            textInputProps={{
-              readOnly: stage !== index && currentTitle !== index,
-              onFocus: () => setCurrentTitle(index),
-              ...info.inputProps,
-            }}
-          />
-        )
+        <>
+          {stage > index - 1 && (
+            <TitledTextInput
+              key={info.id}
+              name={info.id}
+              control={control}
+              rules={info.rules}
+              textInputProps={{
+                readOnly: stage !== index && currentTitle !== index,
+                onFocus: () => setCurrentTitle(index),
+                ...info.inputProps,
+              }}
+            />
+          )}
+        </>
       );
     },
     [control]
   );
 
   const renderCodeInput = useCallback(
-    (data: typeof StageInfo, stage: number, currentTitle: number) => {
-      const index = 2;
+    (data: typeof stageInfo, stage: number, currentTitle: number) => {
+      const index = 1;
       const info = data[index];
       return (
-        stage > index - 1 && (
-          <TitledTextInput
-            key={info.id}
-            name={info.id}
-            control={control}
-            rules={info.rules}
-            textInputProps={{
-              readOnly: stage !== index && currentTitle !== index,
-              onFocus: () => setCurrentTitle(index),
-              sideButtonProps: {
-                title: '재전송',
-                onPress: (text) => console.log(text),
-              },
-              ...info.inputProps,
-            }}
-          />
-        )
+        <>
+          {stage > index - 1 && (
+            <TitledTextInput
+              key={info.id}
+              name={info.id}
+              control={control}
+              rules={info.rules}
+              textInputProps={{
+                readOnly: stage !== index && currentTitle !== index,
+                onFocus: () => setCurrentTitle(index),
+                sideButtonProps: {
+                  title: '재전송',
+                  onPress: (text) => console.log(text),
+                },
+                ...info.inputProps,
+              }}
+            />
+          )}
+        </>
       );
     },
     [control]
   );
 
   const renderPasswordInput = useCallback(
-    (data: typeof StageInfo, stage: number, currentTitle: number) => {
-      const index = 3;
+    (data: typeof stageInfo, stage: number, currentTitle: number) => {
+      const index = isSignUpMode ? 3 : 1;
       const info = data[index];
       return (
-        stage > index - 1 && (
-          <TitledTextInput
-            key={info.id}
-            name={info.id}
-            control={control}
-            rules={info.rules}
-            textInputProps={{
-              onFocus: () => {
-                setStage(index);
-                setCurrentTitle(index);
-              },
-              ...info.inputProps,
-            }}
-          />
-        )
+        <>
+          {stage > index - 1 && (
+            <TitledTextInput
+              key={info.id}
+              name={info.id}
+              control={control}
+              rules={info.rules}
+              textInputProps={{
+                onFocus: () => {
+                  setStage(index);
+                  setCurrentTitle(index);
+                },
+                ...info.inputProps,
+              }}
+            />
+          )}
+        </>
       );
     },
-    [control]
+    [control, isSignUpMode]
   );
 
   const renderPasswordReInput = useCallback(
-    (data: typeof StageInfo, stage: number, currentTitle: number) => {
+    (data: typeof stageInfo, stage: number, currentTitle: number) => {
       const index = 4;
       const info = data[index];
       return (
-        stage === index && (
-          <TitledTextInput
-            key={info.id}
-            name={info.id}
-            control={control}
-            rules={{
-              validate: (value, formValues) =>
-                value === formValues.password ||
-                '비밀번호가 일치하지 않습니다.',
-              ...info.rules,
-            }}
-            textInputProps={{
-              readOnly: stage !== index && currentTitle !== index,
-              onFocus: () => setCurrentTitle(index),
+        <>
+          {stage === index && (
+            <TitledTextInput
+              key={info.id}
+              name={info.id}
+              control={control}
+              rules={{
+                validate: (value, formValues) =>
+                  value === formValues.password ||
+                  '비밀번호가 일치하지 않습니다.',
+                ...info.rules,
+              }}
+              textInputProps={{
+                readOnly: stage !== index && currentTitle !== index,
+                onFocus: () => setCurrentTitle(index),
 
-              ...info.inputProps,
-            }}
-          />
-        )
+                ...info.inputProps,
+              }}
+            />
+          )}
+        </>
       );
     },
     [control]
   );
 
   // const renderInputs = useCallback(
-  //   (info: (typeof StageInfo)[number], index: number) => {
+  //   (info: (typeof stageInfo)[number], index: number) => {
   //     return (
   //       stage > index - 1 && (
   //         <TitledTextInput
@@ -213,27 +262,34 @@ export default function SignUpScreen() {
       <KeyBoardDismissWrapper>
         <View style={styles.container}>
           <HeaderLeadingPage
-            title={StageInfo[stage].title}
-            subTitle={StageInfo[stage].subTitle}
+            title={stageInfo[stage].title}
+            subTitle={stageInfo[stage].subTitle}
           >
-            {/* {StageInfo.map((v, i) => renderInputs(v, i)).reverse()} */}
-            {renderPasswordReInput(StageInfo, stage, currentTitle)}
-            {renderPasswordInput(StageInfo, stage, currentTitle)}
-            {renderCodeInput(StageInfo, stage, currentTitle)}
-            {renderPhonenumberInput(StageInfo, stage, currentTitle)}
-            {renderUsernameInput(StageInfo, stage, currentTitle)}
+            {isSignUpMode &&
+              renderPasswordReInput(stageInfo, stage, currentTitle)}
+            {renderPasswordInput(stageInfo, stage, currentTitle)}
+            {isSignUpMode &&
+              renderUsernameInput(stageInfo, stage, currentTitle)}
+            {isSignUpMode && renderCodeInput(stageInfo, stage, currentTitle)}
+            {renderPhonenumberInput(stageInfo, stage, currentTitle)}
           </HeaderLeadingPage>
           <Button
             disabled={
-              !getFieldState(StageInfo[stage].id).isDirty ||
-              getFieldState(StageInfo[stage].id).invalid
+              !getFieldState(stageInfo[stage].id).isDirty ||
+              getFieldState(stageInfo[stage].id).invalid
             }
             style={styles.submit}
-            title={stage === StageInfo.length - 1 ? '회원가입' : '확인'}
+            title={
+              stage === stageInfo.length - 1
+                ? isSignUpMode
+                  ? '회원가입'
+                  : '로그인'
+                : '확인'
+            }
             onPress={() =>
-              stage === StageInfo.length - 1
+              stage === stageInfo.length - 1
                 ? handleSubmit(onSubmitSuccess, onSubmitFail)()
-                : setStage((prev) => prev + 1)
+                : changeForm()
             }
           />
         </View>
