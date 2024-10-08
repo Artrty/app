@@ -74,7 +74,6 @@ export default function SignUpScreen() {
       phoneNumber: data.phonenumber,
       password: data.password,
     });
-    console.log(res);
     router.replace('/sign-up/complete');
   }, []);
 
