@@ -6,7 +6,7 @@ export type IStageInfoType = {
   title: string;
   subTitle: string;
   inputProps: TInputProps;
-  rules: RegisterOptions;
+  rules: RegisterOptions<any> | undefined;
 };
 
 export const SignInStageInfo: IStageInfoType[] = [

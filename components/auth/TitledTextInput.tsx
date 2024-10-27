@@ -12,7 +12,8 @@ import {
   useController,
   FieldValues,
   FieldPath,
-  UseControllerProps,
+  RegisterOptions,
+  Control,
 } from 'react-hook-form';
 
 export interface TInputProps extends TextInputProps {
@@ -23,21 +24,23 @@ export interface TInputProps extends TextInputProps {
   };
   filterRule?: RegExp;
 }
-interface IProps {
+interface IProps<T extends FieldValues> {
   textInputProps: TInputProps;
+  name: FieldPath<T>;
+  control: Control<T>;
+  rules?: RegisterOptions;
 }
 
 export default function TitledTextInput<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  textInputProps,
-  ...props
-}: IProps & UseControllerProps<TFieldValues, TName>) {
+>({ textInputProps, ...props }: IProps<TFieldValues>) {
   const {
     field,
     fieldState: { error },
-  } = useController({ ...props });
+  } = useController({
+    ...props,
+    rules: props.rules as RegisterOptions<TFieldValues>,
+  });
   const [isFocused, setIsFocused] = useState(false);
   const [text, setText] = useState('');
 

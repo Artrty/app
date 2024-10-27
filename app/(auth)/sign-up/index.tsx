@@ -11,6 +11,10 @@ import { KeyBoardDismissWrapper } from '@/components/template/KeyboardDismissWra
 import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
 import { SignInStageInfo, SignUpStageInfo } from './StageInfo';
 
+import API from '@/api';
+
+import { useAuthStore } from '@/store/auth/useAuthStore';
+
 type FormData = {
   [key in (typeof SignUpStageInfo)[number]['id']]: string;
 };
@@ -37,45 +41,116 @@ export default function SignUpScreen() {
   const [isSignUpMode, setIsSignUpMode] = useState(true);
   const [stageInfo, setStageInfo] = useState(SignUpStageInfo);
 
+  const { setToken, login } = useAuthStore();
+
   useEffect(() => {
     setStageInfo(isSignUpMode ? SignUpStageInfo : SignInStageInfo);
   }, [isSignUpMode]);
 
   const changeForm = useCallback(async () => {
-    if (stageInfo[stage].id === 'phonenumber') {
-      const res = await axios.get(`/user/${getValues().phonenumber}/valid`);
-      console.log('status', res);
-      if (res.data.data === true) {
-        // user is a member
-        setIsSignUpMode(false);
-      } else {
-        // user is not a member
-        setIsSignUpMode(true);
-        // send verification code
-        const res = await axios.get(
-          `/auth/${getValues().phonenumber}/send-sms`
+    switch (stageInfo[stage].id) {
+      case 'phonenumber':
+        console.log('isUser checking...');
+        await API.user.isUser(getValues().phonenumber, {
+          onSuccess: (data) => {
+            console.log('isUser', data);
+            setIsSignUpMode(!data.data.data.exists);
+
+            // if (!data.data.data.exists) {
+            //   // user is not a member
+            //   // sending verification code
+            //   console.log('sending code...');
+            //   API.auth.sendCodeTo(getValues().phonenumber, {
+            //     onSuccess: (data) => {
+            //       console.log('code sent', data);
+            //     },
+            //   });
+            // }
+          },
+          onError: (e) => {
+            switch (e.response?.data.code) {
+              case 'U504':
+                // user is not a member
+                // sending verification code
+                console.log('sending code...');
+                API.auth.sendCodeTo(getValues().phonenumber, {
+                  onSuccess: (data) => {
+                    console.log('code sent', data);
+                  },
+                });
+                break;
+            }
+          },
+        });
+
+        break;
+      case 'code':
+        API.auth.verifyCode(
+          {
+            phonenumber: getValues().phonenumber,
+            code: getValues().code,
+          },
+          {
+            onSuccess: (data) => {
+              console.log('verifyCode success', data);
+            },
+            onClientError: (e) => {
+              // if wrong code
+            },
+            onServerError: (e) => {},
+          }
         );
-        console.log(res.data);
-      }
-    } else if (stageInfo[stage].id === 'code') {
-      const res = await axios.post(`/auth/verify-sms`, {
-        phoneNumber: getValues().phonenumber,
-        userVerifiedNumber: getValues().code,
-      });
-      console.log(res.data);
+        break;
     }
     setStage((prev) => prev + 1);
   }, [getValues, stage, stageInfo]);
 
-  const onSubmitSuccess: SubmitHandler<FormData> = useCallback(async (data) => {
-    console.log('data', data);
-    const res = await axios.post('/auth/signup', {
-      userName: data.username,
-      phoneNumber: data.phonenumber,
-      password: data.password,
-    });
-    router.replace('/sign-up/complete');
-  }, []);
+  const onSubmitSuccess: SubmitHandler<FormData> = useCallback(
+    async (form) => {
+      console.log('form', form);
+      if (isSignUpMode) {
+        API.auth.signUp(
+          {
+            username: form.username,
+            phonenumber: form.phonenumber,
+            password: form.password,
+          },
+          {
+            onSuccess() {
+              router.replace({
+                pathname: '/sign-up/complete',
+                params: {
+                  mode: 'sign-up',
+                },
+              });
+            },
+          }
+        );
+      } else {
+        API.auth.signIn(
+          {
+            phonenumber: form.phonenumber,
+            password: form.password,
+          },
+          {
+            onSuccess(data) {
+              console.log('login success', data);
+              const token = data.data.data.authResponse.token;
+              setToken(token);
+              login();
+              router.replace({
+                pathname: '/sign-up/complete',
+                params: {
+                  mode: 'sign-in',
+                },
+              });
+            },
+          }
+        );
+      }
+    },
+    [isSignUpMode]
+  );
 
   const onSubmitFail: SubmitErrorHandler<FormData> = useCallback((error) => {
     console.log('error', error);
