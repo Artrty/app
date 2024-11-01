@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type State = {
   isLoggedIn: boolean;
@@ -36,6 +37,7 @@ export const useAuthStore = create(
     }),
     {
       name: 'userInfoStorage', //Storage 이름 지정 (default: localStorage)
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
   //)

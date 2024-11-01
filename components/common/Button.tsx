@@ -4,16 +4,18 @@ import {
   StyleSheet,
   Text,
   ButtonProps,
-  Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 
 interface Props {
   title: string;
   style?: object;
+  isLoading?: boolean;
 }
 export function Button({
   title,
   style,
+  isLoading,
   onPress,
   disabled,
 }: Props & ButtonProps) {
@@ -30,7 +32,11 @@ export function Button({
         }
       }}
     >
-      <Text style={styles.title}>{title}</Text>
+      {isLoading ? (
+        <ActivityIndicator color='#FFFFFF' />
+      ) : (
+        <Text style={styles.title}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 }

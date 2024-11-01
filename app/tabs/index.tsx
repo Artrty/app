@@ -1,75 +1,72 @@
-import { Image, StyleSheet, Platform, Text } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  SafeAreaView,
+} from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { HeaderNavbar } from '@/components/common/HeaderNavbar';
+import { ShowThumbnailFlatlist } from '@/components/main/ShowThumbnailFlatlist';
+import { BannerFlatlist } from '@/components/main/BannerFlatlist';
 
 export default function HomeScreen() {
+  const musicImages = [
+    require('@/assets/images/music/1.jpeg'),
+    require('@/assets/images/music/2.jpeg'),
+    require('@/assets/images/music/3.jpeg'),
+    require('@/assets/images/music/4.jpeg'),
+    require('@/assets/images/music/5.jpeg'),
+  ];
+
+  const exhibitionImages = [
+    require('@/assets/images/exhibition/1.jpeg'),
+    require('@/assets/images/exhibition/2.jpeg'),
+    require('@/assets/images/exhibition/3.jpeg'),
+    require('@/assets/images/exhibition/4.jpeg'),
+    require('@/assets/images/exhibition/5.jpeg'),
+  ];
+
+  const theaterImages = [
+    require('@/assets/images/theater/1.jpeg'),
+    require('@/assets/images/theater/2.jpeg'),
+    require('@/assets/images/theater/3.jpeg'),
+    require('@/assets/images/theater/4.jpeg'),
+    require('@/assets/images/theater/5.jpeg'),
+  ];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      {/* <ThemedView style={styles.titleContainer}>
-        <ThemedText type='title'>Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type='subtitle'>Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit{' '}
-          <ThemedText type='defaultSemiBold'>app/(tabs)/index.tsx</ThemedText>{' '}
-          to see changes. Press{' '}
-          <ThemedText type='defaultSemiBold'>
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type='subtitle'>Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this
-          starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type='subtitle'>Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type='defaultSemiBold'>npm run reset-project</ThemedText>{' '}
-          to get a fresh <ThemedText type='defaultSemiBold'>app</ThemedText>{' '}
-          directory. This will move the current{' '}
-          <ThemedText type='defaultSemiBold'>app</ThemedText> to{' '}
-          <ThemedText type='defaultSemiBold'>app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView> */}
-      <Text>Home</Text>
-    </ParallaxScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.container} stickyHeaderIndices={[1]}>
+        {/* header */}
+        <Text style={styles.appName}>{'SPOTL'}</Text>
+        <HeaderNavbar />
+        {/* body */}
+        <BannerFlatlist items={theaterImages} />
+        <Text style={styles.contentTitle}>{'이번주 예정 공연'}</Text>
+        <ShowThumbnailFlatlist items={musicImages} />
+        <Text style={styles.contentTitle}>{'기흥구 주변의 공연'}</Text>
+        <ShowThumbnailFlatlist items={exhibitionImages} />
+        <View style={{ flex: 1, height: 10000 }}></View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  appName: {
+    fontSize: 40,
+    paddingHorizontal: 14,
+    marginBottom: 4,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  contentTitle: {
+    fontSize: 22,
+    paddingHorizontal: 14,
+    marginTop: 16,
   },
 });

@@ -1,7 +1,7 @@
 import {
   View,
   Text,
-  TextInput,
+  SafeAreaView,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
@@ -30,27 +30,17 @@ export default function LoginScreen() {
   useEffect(() => {}, []);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.avoidingView}
-    >
-      <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <View style={styles.form}>
-            <Text>Artrty</Text>
-            <View style={styles.inputs}>
-              <Link href='/sign-up'>{'회원가입'}</Link>
-            </View>
-            <Button
-              title='로그인'
-              onPress={(e) => {
-                console.log('login button pressed');
-              }}
-            />
-          </View>
-        </View>
-      </Pressable>
-    </KeyboardAvoidingView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.appName}>SPOTL</Text>
+        <Button
+          title='로그인 / 회원가입'
+          onPress={(e) => {
+            router.push('/sign-up');
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -66,13 +56,8 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 40,
   },
-  inputs: {
-    width: '100%',
-  },
-  form: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+
+  appName: {
+    fontSize: 30,
   },
 });

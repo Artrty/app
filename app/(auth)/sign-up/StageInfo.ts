@@ -6,7 +6,7 @@ export type IStageInfoType = {
   title: string;
   subTitle: string;
   inputProps: TInputProps;
-  rules: RegisterOptions<any> | undefined;
+  rules: RegisterOptions | undefined;
 };
 
 export const SignInStageInfo: IStageInfoType[] = [
@@ -54,7 +54,7 @@ export const SignUpStageInfo: IStageInfoType[] = [
   {
     id: 'phonenumber',
     title: '휴대폰 번호를 알려주세요',
-    subTitle: '이미 회원이라면 로그인, 새로 오셨다면 회원가입을 진행할게요',
+    subTitle: '이미 회원이라면 로그인,\n새로 오셨다면 회원가입을 진행할게요',
     inputProps: {
       title: '전화번호',
       placeholder: '전화번호',

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
 
+import { Label } from '../common/Label';
 interface Props {
   title: string;
   subTitle: string;
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    marginBottom: 4,
+    marginBottom: 8,
   },
   subTitle: {
     color: 'grey',

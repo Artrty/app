@@ -20,7 +20,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const session = false;
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Pretendard: require('../assets/fonts/Pretendard-Regular.otf'),
   });
 
   useEffect(() => {
@@ -45,6 +45,7 @@ export default function RootLayout() {
           name='tabs'
           options={{ headerShown: false, animation: 'fade' }}
         />
+        <Stack.Screen name='detail' />
         <Stack.Screen name='+not-found' />
       </Stack>
       {/* </BottomSheetModalProvider>
