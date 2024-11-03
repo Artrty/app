@@ -10,6 +10,7 @@ import {
 import { HeaderNavbar } from '@/components/common/HeaderNavbar';
 import { ShowThumbnailFlatlist } from '@/components/main/ShowThumbnailFlatlist';
 import { BannerFlatlist } from '@/components/main/BannerFlatlist';
+import { MainHeader } from '@/components/common/MainHeader';
 
 export default function HomeScreen() {
   const musicImages = [
@@ -40,7 +41,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container} stickyHeaderIndices={[1]}>
         {/* header */}
-        <Text style={styles.appName}>{'SPOTL'}</Text>
+        <MainHeader />
         <HeaderNavbar />
         {/* body */}
         <BannerFlatlist items={theaterImages} />
@@ -58,11 +59,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  appName: {
-    fontSize: 40,
-    paddingHorizontal: 14,
-    marginBottom: 4,
   },
   contentTitle: {
     fontSize: 22,

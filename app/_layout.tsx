@@ -12,6 +12,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,6 +38,7 @@ export default function RootLayout() {
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <ThemeProvider value={DefaultTheme}>
+      <StatusBar style='dark' />
       {/* <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider> */}
       <Stack>
@@ -46,6 +48,7 @@ export default function RootLayout() {
           options={{ headerShown: false, animation: 'fade' }}
         />
         <Stack.Screen name='detail' />
+        <Stack.Screen name='create' />
         <Stack.Screen name='+not-found' />
       </Stack>
       {/* </BottomSheetModalProvider>

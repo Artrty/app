@@ -115,8 +115,11 @@ export default function SignUpScreen() {
           }
         );
         break;
+      default:
+        setStage((prev) => prev + 1);
+        setIsLoading(false);
     }
-  }, [getValues, stage, stageInfo]);
+  }, [getValues, stage, stageInfo, setError]);
 
   const onSubmitSuccess: SubmitHandler<FormData> = useCallback(
     async (form) => {

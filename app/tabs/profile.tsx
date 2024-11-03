@@ -1,125 +1,100 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform, Text } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ScrollView } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
-export default function TabTwoScreen() {
+export default function ProfileScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <Ionicons size={310} name='code-slash' style={styles.headerImage} />
-      }
-    >
-      {/* <ThemedView style={styles.titleContainer}>
-        <ThemedText type='title'>Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>
-        This app includes example code to help you get started.
-      </ThemedText>
-      <Collapsible title='File-based routing'>
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type='defaultSemiBold'>app/(tabs)/index.tsx</ThemedText>{' '}
-          and{' '}
-          <ThemedText type='defaultSemiBold'>app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in{' '}
-          <ThemedText type='defaultSemiBold'>app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href='https://docs.expo.dev/router/introduction'>
-          <ThemedText type='link'>Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title='Android, iOS, and web support'>
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the
-          web version, press <ThemedText type='defaultSemiBold'>w</ThemedText>{' '}
-          in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title='Images'>
-        <ThemedText>
-          For static images, you can use the{' '}
-          <ThemedText type='defaultSemiBold'>@2x</ThemedText> and{' '}
-          <ThemedText type='defaultSemiBold'>@3x</ThemedText> suffixes to
-          provide files for different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ alignSelf: 'center' }}
-        />
-        <ExternalLink href='https://reactnative.dev/docs/images'>
-          <ThemedText type='link'>Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title='Custom fonts'>
-        <ThemedText>
-          Open <ThemedText type='defaultSemiBold'>app/_layout.tsx</ThemedText>{' '}
-          to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href='https://docs.expo.dev/versions/latest/sdk/font'>
-          <ThemedText type='link'>Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title='Light and dark mode components'>
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type='defaultSemiBold'>useColorScheme()</ThemedText> hook
-          lets you inspect what the user's current color scheme is, and so you
-          can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href='https://docs.expo.dev/develop/user-interface/color-themes/'>
-          <ThemedText type='link'>Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title='Animations'>
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type='defaultSemiBold'>
-            components/HelloWave.tsx
-          </ThemedText>{' '}
-          component uses the powerful{' '}
-          <ThemedText type='defaultSemiBold'>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The{' '}
-              <ThemedText type='defaultSemiBold'>
-                components/ParallaxScrollView.tsx
-              </ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible> */}
-      <Text>Profile</Text>
-    </ParallaxScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.userInfoContainer}>
+          <Text style={styles.headerTitle}>내 정보</Text>
+          <Text style={styles.title}>
+            <Text style={styles.username}>{'이태규 '}</Text>님 안녕하세요
+          </Text>
+          <View style={styles.menuContainer}>
+            <View style={styles.menuContent}>
+              <MaterialIcons name='create' size={28} />
+              <Text style={styles.menuLabel}>공연 생성</Text>
+            </View>
+            <View style={styles.menuContent}>
+              <MaterialIcons name='qr-code-scanner' size={28} color='black' />
+              <Text style={styles.menuLabel}>QR 스캔</Text>
+            </View>
+            <View style={styles.menuContent}>
+              <MaterialIcons name='confirmation-num' size={28} color='black' />
+              <Text style={styles.menuLabel}>티켓 생성</Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.showInfoContainer}>
+          <View style={styles.showInfoContent}>
+            <Text style={styles.showInfoNumber}>12</Text>
+            <Text style={styles.showInfoLabel}>관람예정 공연</Text>
+          </View>
+          <View style={styles.showInfoContent}>
+            <Text style={styles.showInfoNumber}>3</Text>
+            <Text style={styles.showInfoLabel}>주최한 공연</Text>
+          </View>
+        </View>
+        <ScrollView></ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
   },
-  titleContainer: {
+  userInfoContainer: {
+    flex: 0,
+  },
+  headerTitle: {
+    fontSize: 30,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 24,
+    paddingLeft: 4,
+  },
+  username: {
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  menuContainer: {
+    flex: 0,
     flexDirection: 'row',
-    gap: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 20,
+    gap: 12,
+  },
+  menuContent: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: '#00000010',
+    borderRadius: 20,
+    paddingVertical: 8,
+  },
+  menuLabel: {
+    fontSize: 16,
+  },
+  showInfoContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  showInfoContent: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  showInfoNumber: {
+    fontSize: 20,
+    fontWeight: 700,
+  },
+  showInfoLabel: {
+    fontSize: 16,
+    color: '#00000090',
   },
 });
