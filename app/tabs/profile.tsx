@@ -1,28 +1,40 @@
-import { StyleSheet, View, Text, SafeAreaView, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import { router } from 'expo-router';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { HeaderTitle } from '@/components/common/HeaderTitle';
 
 export default function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
-          <Text style={styles.headerTitle}>내 정보</Text>
+          <HeaderTitle>{'내 정보'}</HeaderTitle>
           <Text style={styles.title}>
             <Text style={styles.username}>{'이태규 '}</Text>님 안녕하세요
           </Text>
           <View style={styles.menuContainer}>
-            <View style={styles.menuContent}>
+            <TouchableOpacity
+              style={styles.menuContent}
+              onPress={() => router.push('/create')}
+            >
               <MaterialIcons name='create' size={28} />
               <Text style={styles.menuLabel}>공연 생성</Text>
-            </View>
-            <View style={styles.menuContent}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuContent}>
               <MaterialIcons name='qr-code-scanner' size={28} color='black' />
               <Text style={styles.menuLabel}>QR 스캔</Text>
-            </View>
-            <View style={styles.menuContent}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuContent}>
               <MaterialIcons name='confirmation-num' size={28} color='black' />
               <Text style={styles.menuLabel}>티켓 생성</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.showInfoContainer}>
@@ -45,7 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
   },
   userInfoContainer: {
     flex: 0,

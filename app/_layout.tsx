@@ -47,8 +47,8 @@ export default function RootLayout() {
           name='tabs'
           options={{ headerShown: false, animation: 'fade' }}
         />
-        <Stack.Screen name='detail' />
-        <Stack.Screen name='create' />
+        <Stack.Screen name='detail' options={{ headerShown: false }} />
+        <Stack.Screen name='create' options={{ headerShown: false }} />
         <Stack.Screen name='+not-found' />
       </Stack>
       {/* </BottomSheetModalProvider>
