@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { useCallback, useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
@@ -360,44 +360,46 @@ export default function SignUpScreen() {
   // );
 
   return (
-    <KeyboardAvoidingWithHeader>
-      <KeyBoardDismissWrapper>
-        <View style={styles.container}>
-          <HeaderLeadingPage
-            title={stageInfo[stage].title}
-            subTitle={stageInfo[stage].subTitle}
-          >
-            {isSignUpMode &&
-              renderPasswordReInput(stageInfo, stage, currentTitle)}
-            {renderPasswordInput(stageInfo, stage, currentTitle)}
-            {isSignUpMode &&
-              renderUsernameInput(stageInfo, stage, currentTitle)}
-            {isSignUpMode && renderCodeInput(stageInfo, stage, currentTitle)}
-            {renderPhonenumberInput(stageInfo, stage, currentTitle)}
-          </HeaderLeadingPage>
-          <Button
-            isLoading={isLoading}
-            disabled={
-              !getFieldState(stageInfo[stage].id).isDirty ||
-              getFieldState(stageInfo[stage].id).invalid
-            }
-            style={styles.submit}
-            title={
-              stage === stageInfo.length - 1
-                ? isSignUpMode
-                  ? '회원가입'
-                  : '로그인'
-                : '확인'
-            }
-            onPress={() =>
-              stage === stageInfo.length - 1
-                ? handleSubmit(onSubmitSuccess, onSubmitFail)()
-                : changeForm()
-            }
-          />
-        </View>
-      </KeyBoardDismissWrapper>
-    </KeyboardAvoidingWithHeader>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingWithHeader>
+        <KeyBoardDismissWrapper>
+          <View style={styles.container}>
+            <HeaderLeadingPage
+              title={stageInfo[stage].title}
+              subTitle={stageInfo[stage].subTitle}
+            >
+              {isSignUpMode &&
+                renderPasswordReInput(stageInfo, stage, currentTitle)}
+              {renderPasswordInput(stageInfo, stage, currentTitle)}
+              {isSignUpMode &&
+                renderUsernameInput(stageInfo, stage, currentTitle)}
+              {isSignUpMode && renderCodeInput(stageInfo, stage, currentTitle)}
+              {renderPhonenumberInput(stageInfo, stage, currentTitle)}
+            </HeaderLeadingPage>
+            <Button
+              isLoading={isLoading}
+              disabled={
+                !getFieldState(stageInfo[stage].id).isDirty ||
+                getFieldState(stageInfo[stage].id).invalid
+              }
+              style={styles.submit}
+              title={
+                stage === stageInfo.length - 1
+                  ? isSignUpMode
+                    ? '회원가입'
+                    : '로그인'
+                  : '확인'
+              }
+              onPress={() =>
+                stage === stageInfo.length - 1
+                  ? handleSubmit(onSubmitSuccess, onSubmitFail)()
+                  : changeForm()
+              }
+            />
+          </View>
+        </KeyBoardDismissWrapper>
+      </KeyboardAvoidingWithHeader>
+    </SafeAreaView>
   );
 }
 

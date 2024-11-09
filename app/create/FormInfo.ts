@@ -17,7 +17,7 @@ export const CreateFormInfo: ICreateFormType[] = [
   {
     id: 'eventTitle',
     inputProps: {
-      title: '공연명',
+      title: '공연명 (필수)',
       placeholder: '공연명을 입력해주세요',
       autoFocus: true,
     },
@@ -28,7 +28,7 @@ export const CreateFormInfo: ICreateFormType[] = [
   {
     id: 'eventLocation',
     inputProps: {
-      title: '공연장소',
+      title: '공연장소 (필수)',
       placeholder: '공연장소를 입력해주세요',
       inputMode: 'text',
       maxLength: 20,
@@ -40,7 +40,7 @@ export const CreateFormInfo: ICreateFormType[] = [
   {
     id: 'eventDate',
     inputProps: {
-      title: '공연일자',
+      title: '공연일자 (필수)',
       placeholder: '공연일자를 입력해주세요',
       maxLength: 20,
     },
@@ -51,9 +51,10 @@ export const CreateFormInfo: ICreateFormType[] = [
   {
     id: 'eventDescription',
     inputProps: {
-      title: '공연내용',
+      title: '공연내용 (필수)',
       placeholder: '공연내용을 입력해주세요',
       inputMode: 'text',
+      multiline: true,
     },
     rules: {
       required: '필수 입력 항목입니다',

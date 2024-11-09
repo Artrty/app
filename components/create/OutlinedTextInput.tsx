@@ -54,11 +54,7 @@ export default function OutlinedTextInput<
             entering={FadeIn}
             style={{
               ...styles.title,
-              color: isFocused
-                ? '#007AFF'
-                : textInputProps.readOnly
-                  ? 'lightgrey'
-                  : 'grey',
+              color: isFocused ? '#007AFF' : 'grey',
             }}
           >
             {textInputProps.title}
@@ -66,6 +62,9 @@ export default function OutlinedTextInput<
         </>
         <View style={styles.rowContainer}>
           <TextInput
+            autoCapitalize='none'
+            spellCheck={false}
+            autoCorrect={false}
             id={field.name}
             style={styles.input}
             selectionColor='rgb(30, 108, 219)'
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
   },
   TInputContainer: {
     width: '100%',
-    height: 54,
+    // height: 54,
     borderColor: 'lightgrey',
     borderBottomWidth: 2,
   },
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     backgroundColor: 'white',
-    fontSize: 21,
+    fontSize: 18,
 
     paddingVertical: 6,
     fontWeight: 300,

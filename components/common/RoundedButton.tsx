@@ -5,17 +5,30 @@ import {
   Text,
   ButtonProps,
   Keyboard,
+  StyleProp,
+  ViewProps,
+  ViewStyle,
 } from 'react-native';
 
 interface Props {
   title: string;
-  style?: object;
+  style: ViewStyle;
 }
-export function RoundedButton({ title, style, onPress }: Props & ButtonProps) {
+export function RoundedButton({
+  title,
+  style,
+  onPress,
+  disabled,
+}: Props & ButtonProps) {
   return (
     <TouchableOpacity
-      style={{ ...styles.container, ...style }}
+      style={[
+        styles.container,
+        style,
+        disabled ? styles.disabled : styles.active,
+      ]}
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
@@ -24,15 +37,20 @@ export function RoundedButton({ title, style, onPress }: Props & ButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    flex: 1,
     height: 60,
+    maxHeight: 60,
     paddingHorizontal: 6,
     marginHorizontal: 'auto',
-    marginVertical: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#007AFF',
     borderRadius: 18,
+  },
+  active: {
+    backgroundColor: '#007AFF',
+  },
+  disabled: {
+    backgroundColor: 'lightgrey',
   },
   title: {
     fontSize: 18,

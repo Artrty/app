@@ -6,7 +6,7 @@ interface Props {
   children: React.ReactNode | React.ReactNode[];
 }
 export function KeyboardAvoidingWithHeader({ children }: Props) {
-  const offset = useHeaderHeight() + StatusBar.currentHeight! - 34;
+  const offset = useHeaderHeight() + StatusBar.currentHeight!;
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

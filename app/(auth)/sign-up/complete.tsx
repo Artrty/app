@@ -25,7 +25,12 @@ export default function SignUpCompleteScreen() {
       </View>
       <Animated.View
         entering={FadeIn.delay(1000)}
-        style={{ marginTop: 'auto' }}
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          marginBottom: 30,
+        }}
       >
         <RoundedButton
           title='시작'
@@ -41,7 +46,8 @@ export default function SignUpCompleteScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+
     paddingHorizontal: 20,
   },
   titleView: {
