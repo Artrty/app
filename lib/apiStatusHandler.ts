@@ -9,15 +9,13 @@ interface Props<R> {
 }
 
 interface Res<T> {
-  status: 'success' | 'error';
-  httpStatus: number;
   data: T;
   message: string;
   code: string;
 }
 
 export function ApiStatusHandler<R, T = any>(
-  api: (q: T) => Promise<AxiosResponse<any, any>>
+  api: (q?: T) => Promise<AxiosResponse<any, any>>
 ) {
   return async (
     q: T,

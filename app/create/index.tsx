@@ -17,9 +17,9 @@ import { CreateFormInfo } from './FormInfo';
 import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as ImagePicker from 'expo-image-picker';
-
 import { RoundedButton } from '@/components/common/RoundedButton';
 import api from '@/api';
+import { router } from 'expo-router';
 
 type Form = {
   [key in (typeof CreateFormInfo)[number]['id']]: string;
@@ -38,8 +38,8 @@ export default function CreatePostScreen() {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
+      // allowsEditing: true,
+      // aspect: [4, 3],
       quality: 1,
     });
 
@@ -49,7 +49,7 @@ export default function CreatePostScreen() {
       const photo = {
         uri: result.assets[0].uri,
         type: result.assets[0].type,
-        name: `${result.assets[0].assetId}`,
+        name: `${result.assets[0].fileName}`,
       };
       setValue('image', photo);
       setImage(result.assets[0].uri);
@@ -83,7 +83,14 @@ export default function CreatePostScreen() {
     api.event.createEvent(form, {
       onSuccess: (res) => {
         console.log(res);
-        Alert.alert('게시글 생성을 성공했습니다.');
+        Alert.alert('게시글 생성을 성공했습니다.', '', [
+          {
+            text: '확인',
+            onPress: () => {
+              router.replace('/tabs/');
+            },
+          },
+        ]);
       },
     });
   }, []);
@@ -124,10 +131,7 @@ export default function CreatePostScreen() {
                 />
               )
             )}
-            <Button
-              title='Pick an image from camera roll'
-              onPress={pickImage}
-            />
+            <Button title='이미지 선택' onPress={pickImage} />
             {image && (
               <Image
                 source={{ uri: image }}

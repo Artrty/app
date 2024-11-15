@@ -11,7 +11,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors['light'].tint,
+        tabBarActiveTintColor: 'black',
         headerShown: false,
       }}
     >
@@ -21,7 +21,7 @@ export default function TabLayout() {
           title: '',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? 'home' : 'home-outline'}
+              name={focused ? 'albums' : 'albums-outline'}
               color={color}
             />
           ),

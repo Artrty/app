@@ -1,5 +1,6 @@
 import { KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
+import { useHeaderHeights } from '@react-navigation/elements';
+
 import React from 'react';
 
 interface Props {
