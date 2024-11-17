@@ -35,15 +35,28 @@ export function ApiStatusHandler<R, T = any>(
           onError && onError(e);
           if (e.response?.status < 500) {
             // client error
-            console.log('client error: ', e);
+            console.log(
+              'client error: ',
+              e,
+              e.response.data.code,
+              e.response.data.message
+            );
             onClientError && onClientError(e);
           } else if (e.response?.status < 600) {
             // server error
-            console.log('server error: ', e);
+            console.log(
+              'server error: ',
+              e,
+              e.response.data.code,
+              e.response.data.message
+            );
             onServerError && onServerError(e);
           } else {
             // unknown error
             console.log('unknown axios error: ', e);
+            if (e.response && e.response.data) {
+              console.log(e.response.data.code, e.response.data.message);
+            }
             console.log(e);
             onUnknownError && onUnknownError(e);
           }

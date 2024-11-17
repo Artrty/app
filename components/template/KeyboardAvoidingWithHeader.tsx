@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, Platform, StatusBar } from 'react-native';
-import { useHeaderHeights } from '@react-navigation/elements';
+import { useHeaderHeight } from 'expo-router/node_modules/@react-navigation/elements';
 
 import React from 'react';
 
