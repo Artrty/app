@@ -27,11 +27,17 @@ export default function ProfileScreen() {
               <MaterialIcons name='create' size={28} />
               <Text style={styles.menuLabel}>공연 생성</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuContent}>
+            <TouchableOpacity
+              style={styles.menuContent}
+              onPress={() => router.push('/qr')}
+            >
               <MaterialIcons name='qr-code-scanner' size={28} color='black' />
               <Text style={styles.menuLabel}>QR 스캔</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuContent}>
+            <TouchableOpacity
+              style={styles.menuContent}
+              onPress={() => router.push('/ticket')}
+            >
               <MaterialIcons name='confirmation-num' size={28} color='black' />
               <Text style={styles.menuLabel}>티켓 생성</Text>
             </TouchableOpacity>

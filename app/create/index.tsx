@@ -7,19 +7,19 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Image } from 'expo-image';
 import { Button } from '@/components/common/Button';
 import { HeaderTitle } from '@/components/common/HeaderTitle';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import OutlinedTextInput from '@/components/create/OutlinedTextInput';
-import { CreateFormInfo } from './FormInfo';
+import { CreateFormInfo } from '../../constants/FormInfo';
 import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { RoundedButton } from '@/components/common/RoundedButton';
 import api from '@/api';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 type Form = {
   [key in (typeof CreateFormInfo)[number]['id']]: string;
@@ -33,6 +33,7 @@ export default function CreatePostScreen() {
   const [date, setDate] = useState(new Date(Date.now()));
   const [show, setShow] = useState(false);
   const [image, setImage] = useState<string | null>(null);
+  const params = useLocalSearchParams();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -105,32 +106,52 @@ export default function CreatePostScreen() {
         <ScrollView style={styles.container}>
           <View style={{ flex: 1, paddingBottom: 30 }}>
             <HeaderTitle>공연 생성</HeaderTitle>
-            {CreateFormInfo.map((info) =>
-              info.id === 'eventDate' ? (
-                <OutlinedTextInput
-                  key={info.id}
-                  name={info.id}
-                  control={control}
-                  rules={info.rules}
-                  textInputProps={{
-                    readOnly: Platform.OS !== 'web',
-                    onPress: () => {
-                      Keyboard.dismiss();
-                      setShow(true);
-                    },
-                    ...info.inputProps,
-                  }}
-                />
-              ) : (
-                <OutlinedTextInput
-                  key={info.id}
-                  name={info.id}
-                  control={control}
-                  rules={info.rules}
-                  textInputProps={info.inputProps}
-                />
-              )
-            )}
+            {CreateFormInfo.map((info) => {
+              if (info.id === 'eventDate') {
+                return (
+                  <OutlinedTextInput
+                    key={info.id}
+                    name={info.id}
+                    control={control}
+                    rules={info.rules}
+                    textInputProps={{
+                      readOnly: Platform.OS !== 'web',
+                      onPress: () => {
+                        Keyboard.dismiss();
+                        setShow(true);
+                      },
+                      ...info.inputProps,
+                    }}
+                  />
+                );
+              } else if (info.id === 'eventLocation') {
+                return (
+                  <OutlinedTextInput
+                    key={info.id}
+                    name={info.id}
+                    control={control}
+                    rules={info.rules}
+                    textInputProps={{
+                      // readOnly: true,
+                      // onPress: () => {
+                      //   router.replace('/create/address');
+                      // },
+                      ...info.inputProps,
+                    }}
+                  />
+                );
+              } else {
+                return (
+                  <OutlinedTextInput
+                    key={info.id}
+                    name={info.id}
+                    control={control}
+                    rules={info.rules}
+                    textInputProps={info.inputProps}
+                  />
+                );
+              }
+            })}
             <Button title='이미지 선택' onPress={pickImage} />
             {image && (
               <Image

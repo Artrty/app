@@ -5,7 +5,6 @@ export default function CreateStack() {
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
-      <Stack.Screen name='address' options={{ headerShown: false }} />
     </Stack>
   );
 }

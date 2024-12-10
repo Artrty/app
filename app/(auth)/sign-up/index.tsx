@@ -9,7 +9,7 @@ import { Button } from '@/components/common/Button';
 import { HeaderLeadingPage } from '@/components/template/HeaderLeadingPage';
 import { KeyBoardDismissWrapper } from '@/components/template/KeyboardDismissWrapper';
 import { KeyboardAvoidingWithHeader } from '@/components/template/KeyboardAvoidingWithHeader';
-import { SignInStageInfo, SignUpStageInfo } from './StageInfo';
+import { SignInStageInfo, SignUpStageInfo } from '../../../constants/StageInfo';
 
 import API from '@/api';
 
